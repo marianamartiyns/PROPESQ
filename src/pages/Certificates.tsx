@@ -12,6 +12,8 @@ type Certificado = {
   projetoId: string;  // Projeto
   data: string;       // ISO date ou DD/MM/YYYY
   pdfUrl?: string;    // opcional no mock
+  download?: never;   // para uso na tabela
+  verificar?: never;  // para uso na tabela
 };
 
 function normalize(str: string) {

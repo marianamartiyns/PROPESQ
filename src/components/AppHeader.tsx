@@ -18,6 +18,7 @@ import {
   Menu as MenuIcon,
   X as CloseIcon,
 } from "lucide-react";
+
 import LogoImg from "@/styles/imgs/logo_propesq_imagem.png";
 import { useAuth } from "@/context/AuthContext";
 import "@/styles/AppHeader.css";
