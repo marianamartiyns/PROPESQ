@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useAuth, Role } from '@/context/AuthContext'
-import 'src/styles/Login.css'
+import '@/styles/Login.css'
 import logo from '@/styles/imgs/logo_propesq.png'
 
 export default function Login() {
