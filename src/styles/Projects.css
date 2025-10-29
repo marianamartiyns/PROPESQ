@@ -1,0 +1,454 @@
+/*  src/styles/Projects.css */
+
+.page-projects .projects-header {
+  display: grid;
+  grid-template-columns: 1fr auto; 
+  grid-template-rows: auto auto;    
+  grid-template-areas:
+    "search actions"
+    "selects actions";
+  gap: 12px;
+  align-items: end;                
+  margin-bottom: 12px;
+}
+
+/* Mapear áreas do grid */
+.page-projects .search-wrap { grid-area: search; }
+.page-projects .selects     { grid-area: selects; }
+.page-projects .actions     { grid-area: actions; align-self: end; }
+
+/* =========================
+   Filtros / campos / selects
+   ========================= */
+.page-projects .filters {
+  display: grid;
+  gap: 10px;
+}
+
+/* Input de busca */
+.page-projects .search input {
+  width: 100%;
+  height: 42px;
+  padding: 10px 12px;
+  border: 1px solid #e5e7eb; /* gray-200 */
+  border-radius: 10px;
+  background: #ffffffcc;
+  backdrop-filter: blur(2px);
+  outline: none;
+  font-size: 0.95rem;
+  transition: box-shadow .15s ease, border-color .15s ease;
+}
+.page-projects .search input:focus {
+  border-color: #3a6dd8; /* azul-claro do projeto */
+  box-shadow: 0 0 0 3px rgba(58, 109, 216, 0.15);
+}
+
+/* Grupo de selects */
+.page-projects .selects {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(160px, 1fr));
+  gap: 10px;
+}
+
+.page-projects .select {
+  display: grid;
+  gap: 6px;
+  font-size: 0.9rem;
+}
+.page-projects .select > span {
+  color: #6b7280; /* gray-500 */
+  font-weight: 600;
+}
+.page-projects .select select {
+  appearance: none;
+  height: 42px;
+  padding: 10px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #fff;
+  font-size: 0.95rem;
+  transition: box-shadow .15s ease, border-color .15s ease;
+}
+.page-projects .select select:focus {
+  border-color: #3a6dd8;
+  box-shadow: 0 0 0 3px rgba(58, 109, 216, 0.15);
+}
+
+/* Ações (botão novo projeto) */
+.page-projects .actions {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  gap: 8px;
+}
+
+/* Nota de papel (role-note) */
+.page-projects .role-note {
+  font-size: 0.9rem;
+  color: #6b7280;
+  background: #f8fafc; /* panel */
+  border: 1px dashed #e5e7eb;
+  padding: 8px 10px;
+  border-radius: 10px;
+}
+
+/* Tabela / conteúdo */
+.page-projects .table-wrap {
+  overflow: auto;
+  border-radius: 12px;
+}
+
+.page-projects .table-wrap th,
+.page-projects .table-wrap td {
+  padding: 10px 16px; /* ajuste aqui: altura e largura das células */
+}
+
+/* Utilitárias locais (não globais) */
+.page-projects .mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+.page-projects .proj-ttl { font-weight: 600; }
+
+.page-projects .empty-state {
+  padding: 24px;
+  text-align: center;
+}
+.page-projects .empty-title {
+  font-weight: 700;
+  font-size: 1rem;
+}
+.page-projects .empty-subtitle {
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+/* Badges (escopadas) */
+.page-projects .badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 9999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1;
+  border: 1px solid transparent;
+}
+.page-projects .badge-green { background:#ecfdf5; color:#065f46; border-color:#a7f3d0; }
+.page-projects .badge-amber { background:#fff7ed; color:#9a3412; border-color:#fed7aa; }
+.page-projects .badge-red   { background:#fef2f2; color:#991b1b; border-color:#fecaca; }
+.page-projects .badge-gray  { background:#f3f4f6; color:#111827; border-color:#e5e7eb; }
+
+/* Responsividade */
+@media (max-width: 920px) {
+  .page-projects .projects-header {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    grid-template-areas:
+      "search"
+      "selects"
+      "actions";
+  }
+  .page-projects .actions { align-self: start; justify-content: flex-start; }
+  .page-projects .selects { grid-template-columns: 1fr; }
+}
+/* =============================
+   Reorganização + Espaçamentos
+   ============================= */
+
+/* Cartão dos critérios */
+.page-projects .criteria.card-like {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;                 /* +2px */
+  margin-bottom: 16px;           /* +2px */
+}
+
+/* Título */
+.page-projects .criteria-title {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #223866;
+  margin-bottom: 12px;           /* +4px */
+}
+
+/* Grade principal: cada .criteria-grid é um "bloco" de linhas.
+   Em telas largas, mostramos 2 colunas de linhas lado a lado. */
+.page-projects .criteria-grid {
+  display: grid;
+  grid-template-columns: 1fr;    /* mobile: 1 coluna */
+  gap: 12px;                     /* +2px */
+  margin-bottom: 12px;
+}
+
+/* Cada linha possui 2 colunas internas: label/checkbox (fixo) + campo (flex) */
+.page-projects .criteria-row {
+  display: grid;
+  grid-template-columns: 210px 1fr; /* label fixo deixa tudo alinhado */
+  gap: 12px;
+  align-items: center;
+  padding: 6px 8px;                 /* pequena margem visual por item */
+  border-radius: 10px;
+}
+
+/* Coluna da esquerda: checkbox + rótulo */
+.page-projects .criteria-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #374151;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Offset para linhas sem checkbox (mantém alinhamento) */
+.page-projects .criteria-offset { width: 100%; }
+
+/* Coluna da direita: campos */
+.page-projects .criteria-field {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Margem pequena em cada controle (como pediu) */
+.page-projects .criteria-field > * {
+  margin: 2px 0;                 /* margem vertical discreta */
+}
+
+/* Inputs/selects seguindo teu padrão */
+.page-projects .criteria-field input[type="text"],
+.page-projects .criteria-field input[type="number"],
+.page-projects .criteria-field select {
+  height: 42px;
+  padding: 10px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #fff;
+  font-size: 0.95rem;
+  outline: none;
+  transition: box-shadow .15s ease, border-color .15s ease;
+}
+.page-projects .criteria-field input[type="text"]:focus,
+.page-projects .criteria-field input[type="number"]:focus,
+.page-projects .criteria-field select:focus {
+  border-color: #3a6dd8;
+  box-shadow: 0 0 0 3px rgba(58, 109, 216, 0.15);
+}
+
+/* Campo "Ano" compacto */
+.page-projects .criteria-field.small input[type="number"] { max-width: 120px; }
+
+/* Radios/checkboxes inline */
+.page-projects .radio,
+.page-projects .checkbox-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.92rem;
+  color: #374151;
+}
+.page-projects .radio.disabled { opacity: .6; pointer-events: none; }
+
+/* Link de reset discreto */
+.page-projects .link-reset {
+  background: transparent; border: 0; color: #3a6dd8;
+  font-weight: 600; cursor: pointer; padding: 6px 8px; border-radius: 8px;
+}
+.page-projects .link-reset:hover { background: rgba(58,109,216,.08); }
+
+/* Ações do bloco (Buscar/Cancelar) */
+.page-projects .criteria-actions {
+  display: flex; align-items: center; gap: 10px; margin-top: 6px;
+}
+.page-projects .criteria-actions .btn {
+  height: 40px; padding: 0 14px; border-radius: 10px;
+}
+
+/* Ação final abaixo da tabela */
+.page-projects .projects-actions-bottom {
+  display: flex; justify-content: flex-end; margin-top: 14px;
+}
+
+/* ====== Responsividade ====== */
+@media (min-width: 980px) {
+  /* Em telas médias/grandes, 2 colunas de linhas */
+  .page-projects .criteria-grid {
+    grid-template-columns: repeat(2, minmax(360px, 1fr));
+    column-gap: 16px;             /* respiro lateral maior */
+  }
+}
+@media (min-width: 1360px) {
+  /* Em telas bem largas, aumente a coluna do label para respirar */
+  .page-projects .criteria-row {
+    grid-template-columns: 230px 1fr;
+  }
+}
+@media (max-width: 920px) {
+  /* Mobile: tudo em 1 coluna */
+  .page-projects .criteria-row {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+    padding: 4px 2px;             /* um pouco mais compacto no mobile */
+  }
+  .page-projects .criteria-field input[type="number"] { max-width: 180px; }
+  .page-projects .projects-actions-bottom { justify-content: flex-start; }
+}
+
+/* ------------- */
+
+/* Layout idêntico ao print: uma coluna de labels/checkbox à esquerda e campo à direita */
+.page-projects .criteria-form .criteria-row {
+  display: grid;
+  grid-template-columns: 210px 1fr; /* largura fixa do bloco de label/checkbox */
+  gap: 12px;
+  align-items: center;
+  padding: 6px 8px;                 /* margem visual por item */
+  border-radius: 8px;
+}
+
+/* Label + checkbox (coluna esquerda) */
+.page-projects .criteria-form .criteria-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #374151;                   /* gray-700 */
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Offset para linhas sem checkbox (Escopo / Gerar relatório) */
+.page-projects .criteria-form .criteria-offset {
+  width: 100%;
+}
+
+/* Coluna direita com os controles */
+.page-projects .criteria-form .criteria-field {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Variante curta (Ano) */
+.page-projects .criteria-form .criteria-field--short input[type="number"] {
+  max-width: 120px;
+}
+
+/* Ajuda do “Código (Formato …)” alinhada ao input */
+.page-projects .criteria-form .criteria-help {
+  font-size: 0.86rem;
+  color: #6b7280;                   /* gray-500 */
+}
+
+/* Pequena margem nos itens (pedido) */
+.page-projects .criteria-form .criteria-field > * { margin: 2px 0; }
+
+/* Inputs/selects herdando teu padrão */
+.page-projects .criteria-form input[type="text"],
+.page-projects .criteria-form input[type="number"],
+.page-projects .criteria-form select {
+  height: 42px;
+  padding: 10px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #fff;
+  font-size: 0.95rem;
+  outline: none;
+  transition: box-shadow .15s ease, border-color .15s ease;
+}
+.page-projects .criteria-form input[type="text"]:focus,
+.page-projects .criteria-form input[type="number"]:focus,
+.page-projects .criteria-form select:focus {
+  border-color: #3a6dd8;
+  box-shadow: 0 0 0 3px rgba(58, 109, 216, 0.15);
+}
+
+/* Radios/checkbox inline */
+.page-projects .criteria-form .radio,
+.page-projects .criteria-form .checkbox-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.92rem;
+  color: #374151;
+}
+.page-projects .criteria-form .radio.disabled { opacity: .6; pointer-events: none; }
+
+/* Ações centralizadas (como no rodapé do print) */
+.page-projects .criteria-form .criteria-actions.center {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+.page-projects .criteria-form .criteria-actions.center .btn {
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 10px;
+}
+
+/* Responsivo: empilha rótulo e campo no mobile */
+@media (max-width: 920px) {
+  .page-projects .criteria-form .criteria-row {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+}
+
+/* =============================
+   Listagem de Projetos
+   ============================= */
+
+/* Bloco geral da listagem */
+.page-projects .projects-list-section {
+  margin-top: 24px;
+}
+
+/* Cabeçalho: título + botão lado a lado */
+.page-projects .projects-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+/* Título da listagem */
+.page-projects .projects-list-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #223866; /* azul-escuro UFPB */
+}
+
+/* Subtítulo explicativo */
+.page-projects .projects-subtitle {
+  margin-top: -2px;
+  margin-bottom: 14px;
+  font-size: 0.9rem;
+  color: #6b7280;
+  max-width: 900px;
+}
+
+/* Botão ao lado do título */
+.page-projects .projects-list-header .btn {
+  height: 38px;
+  padding: 0 16px;
+  font-weight: 600;
+}
+
+/* Responsividade */
+@media (max-width: 720px) {
+  .page-projects .projects-list-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  .page-projects .projects-list-title {
+    font-size: 1rem;
+  }
+}
+
