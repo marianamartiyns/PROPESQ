@@ -6,7 +6,7 @@ import Card from '@/components/Card'
 import Table from '@/components/Table'
 import { projetos } from '@/mock/data'
 import { Link } from 'react-router-dom'
-import '@/styles/projects.css'
+import '@/styles/Projects.css'
 
 type RoleType = 'discente' | 'docente' | 'servidor'
 
