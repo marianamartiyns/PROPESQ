@@ -3,7 +3,7 @@ import StatCard from '@/components/StatCard'
 import Card from '@/components/Card'
 import { projetos, relatorios, notificacoes } from '@/mock/data'
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
-import '@/styles/dashboard.css'
+import '@/styles/Dashboard.css'
 
 const timeline = [
   { etapa: 'Submissão', progresso: 100 },
