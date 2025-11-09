@@ -1,6 +1,5 @@
-// =============================
-// File: src/pages/Projects.tsx
-// =============================
+
+// src/pages/Projects.tsx
 import React, { useMemo, useState } from 'react'
 import Card from '@/components/Card'
 import Table from '@/components/Table'

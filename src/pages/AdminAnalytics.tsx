@@ -1,202 +1,222 @@
-import React from 'react'
+// src/pages/Dashboard.tsx
+import React, { useState } from 'react'
+import StatCard from '@/components/StatCard'
 import Card from '@/components/Card'
 import {
-  ResponsiveContainer,
-  BarChart, Bar,
-  LineChart, Line,
-  AreaChart, Area,
-  ComposedChart,
-  RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis,
-  RadialBarChart, RadialBar,
-  PieChart, Pie, Cell,
-  XAxis, YAxis, CartesianGrid, Tooltip, Legend
+  AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer,
+  PieChart, Pie, Cell, Legend, BarChart, Bar, CartesianGrid
 } from 'recharts'
-import '@/styles/AdminAnalytics.css'
+import '@/styles/Dashboard.css'
 
-/* ================== DADOS MOCK ================== */
-const porCentro = [
-  { nome:'CCEN', projetos: 12 },
-  { nome:'CCS',  projetos: 18 },
-  { nome:'CCT',  projetos: 7  },
-  { nome:'CE',   projetos: 9  },
-]
-const areas = [
-  { nome:'Computação', valor: 22 },
-  { nome:'Medicina',   valor: 15 },
-  { nome:'Biologia',   valor: 12 },
-  { nome:'Educação',   valor: 8  },
-]
-const bolsas = [
-  { tipo:'CNPq',      valor: 14 },
-  { tipo:'UFPB',      valor: 20 },
-  { tipo:'Voluntário',valor: 12 },
-]
-const porMes = [
-  { mes:'Jan', submissoes: 8,  aprovados: 5 },
-  { mes:'Fev', submissoes: 10, aprovados: 6 },
-  { mes:'Mar', submissoes: 12, aprovados: 8 },
-  { mes:'Abr', submissoes: 9,  aprovados: 6 },
-  { mes:'Mai', submissoes: 14, aprovados: 9 },
-  { mes:'Jun', submissoes: 11, aprovados: 7 },
-]
-const statusPorCentro = [
-  { nome:'CCEN', enviados:6, analise:4, aprovados:2 },
-  { nome:'CCS',  enviados:7, analise:7, aprovados:4 },
-  { nome:'CCT',  enviados:3, analise:3, aprovados:1 },
-  { nome:'CE',   enviados:4, analise:3, aprovados:2 },
-]
-const statusDistrib = [
-  { name:'Enviado',    value: 20, fill:'#8c8c8c' },
-  { name:'Em análise', value: 17, fill:'#0050B3' },
-  { name:'Aprovado',   value: 9,  fill:'#22c55e' },
-  { name:'Negado',     value: 6,  fill:'#ef4444' },
-]
-const criteriosRadar = [
-  { criterio:'Originalidade', Computação:4.2, Medicina:3.8, Biologia:3.5, Educação:3.2 },
-  { criterio:'Metodologia',   Computação:4.0, Medicina:3.9, Biologia:3.6, Educação:3.4 },
-  { criterio:'Viabilidade',   Computação:3.7, Medicina:3.9, Biologia:3.8, Educação:3.6 },
-  { criterio:'Impacto',       Computação:4.1, Medicina:4.3, Biologia:3.7, Educação:3.5 },
-]
-const topOrientadores = [
-  { nome:'Prof. A', projetos:7 },
-  { nome:'Prof. B', projetos:6 },
-  { nome:'Prof. C', projetos:5 },
-  { nome:'Prof. D', projetos:4 },
-]
-const COLORS = ['#0050B3', '#FFD700', '#003366', '#8c8c8c', '#22c55e', '#ef4444']
+// ================= MOCKS ================= //
+const AREAS = ['Exatas', 'Humanas', 'Saúde', 'Tecnologia', 'Biológicas']
+const STATUS = ['Ativo', 'Concluído', 'Pendente']
+const TIPOS_BOLSA = ['Iniciação', 'Mestrado', 'Doutorado']
 
-export default function AdminAnalytics() {
+const projetos = Array.from({length: 30}, (_, i) => ({
+  id: i+1,
+  titulo: `Projeto ${i+1}`,
+  area: AREAS[i % AREAS.length],
+  status: STATUS[i % STATUS.length],
+  coordenador: `Coord ${i%5+1}`,
+  prazo: `2025-${(i%12)+1}-15`,
+  aprovados: Math.floor(Math.random() * 20),
+  reprovados: Math.floor(Math.random() * 5),
+}))
+
+const bolsas = Array.from({length: 50}, (_, i) => ({
+  id: i+1,
+  area: AREAS[i % AREAS.length],
+  tipo: TIPOS_BOLSA[i % TIPOS_BOLSA.length],
+}))
+
+const notificacoes = [
+  { id: 1, texto: 'Prazo final para submissão de relatórios trimestrais', tipo: 'urgente' },
+  { id: 2, texto: 'Edital de Inovação 2025 aberto para inscrições', tipo: 'info' },
+  { id: 3, texto: 'Projeto de Extensão Interdisciplinar aprovado', tipo: 'sucesso' },
+]
+
+const COLORS = ['#0077b6', '#00b4d8', '#90e0ef', '#ffb703', '#fb8500']
+
+// ================= Helper ================= //
+function getStatusClass(status: string) {
+  const s = status.toLowerCase()
+  if (s.includes('pend')) return 'badge badge-amber'
+  if (s.includes('and')) return 'badge badge-blue'
+  if (s.includes('plan')) return 'badge badge-neutral'
+  return 'badge badge-green'
+}
+
+// ================= COMPONENTE ================= //
+export default function DashboardAdmin() {
+  // filtros globais
+  const [areaFiltro, setAreaFiltro] = useState<string | 'Todas'>('Todas')
+  const [statusFiltro, setStatusFiltro] = useState<string | 'Todos'>('Todos')
+  const [tipoBolsaFiltro, setTipoBolsaFiltro] = useState<string | 'Todos'>('Todos')
+
+  const projetosFiltrados = projetos.filter(p => 
+    (areaFiltro === 'Todas' || p.area === areaFiltro) &&
+    (statusFiltro === 'Todos' || p.status === statusFiltro)
+  )
+
+  const bolsasFiltradas = bolsas.filter(b => 
+    (areaFiltro === 'Todas' || b.area === areaFiltro) &&
+    (tipoBolsaFiltro === 'Todos' || b.tipo === tipoBolsaFiltro)
+  )
+
+  // KPIs
+  const estatisticas = {
+    projetosAtivos: projetosFiltrados.filter(p => p.status==='Ativo').length,
+    projetosConcluidos: projetosFiltrados.filter(p => p.status==='Concluído').length,
+    bolsistas: bolsasFiltradas.length,
+    editaisAbertos: 3,
+    relatoriosPendentes: projetosFiltrados.filter(p => p.status==='Pendente').length,
+    taxaConclusao: Math.round(
+      (projetosFiltrados.filter(p => p.status==='Concluído').length / projetosFiltrados.length || 1) * 100
+    )
+  }
+
+  // dados para gráficos
+  const aprovadosPorMes = Array.from({length: 12}, (_, i) => {
+    const mes = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'][i]
+    const mesData = projetosFiltrados.filter((_, idx) => idx % 12 === i)
+    const aprovados = mesData.reduce((acc, p) => acc + p.aprovados,0)
+    const reprovados = mesData.reduce((acc, p) => acc + p.reprovados,0)
+    return { mes, aprovados, reprovados }
+  })
+
+  const bolsasPorArea = AREAS.map((a, i) => ({
+    name: a,
+    value: bolsasFiltradas.filter(b => b.area===a).length
+  }))
+
+  const progressoEdital = [
+    { etapa: 'Submissão', progresso: 100 },
+    { etapa: 'Avaliação', progresso: 75 },
+    { etapa: 'Vigência', progresso: 40 },
+    { etapa: 'Encerramento', progresso: 10 },
+  ]
+
   return (
-    <div className="page-admin-analytics">
-      {/* Toolbar (largura total) */}
-      <div className="toolbar tile-toolbar">
-        <input className="input" placeholder="Ano: 2025" />
-        <input className="input" placeholder="Edital: PIBIC" />
+    <div className="dashboard-page">
+      {/* TOPO */}
+      <div className="page-header">
+        <h1 className="page-title">Dashboard Institucional</h1>
+        <span className="pill pill-gold">Gestão Integrada de Pesquisa</span>
       </div>
 
-      {/* HERO: Trend (largura dupla) */}
-      <section className="tile-trend">
-        <Card title="Submissões e aprovados por mês">
-          <div className="chart-wrap">
-            <ResponsiveContainer width="100%" height="100%">
-              <ComposedChart data={porMes}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="mes" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Area type="monotone" dataKey="submissoes" fill="#003366" stroke="#003366" fillOpacity={0.2} />
-                <Line type="monotone" dataKey="aprovados" stroke="#22c55e" strokeWidth={2} dot={false} />
-              </ComposedChart>
-            </ResponsiveContainer>
-          </div>
-        </Card>
-      </section>
+      {/* FILTROS GLOBAIS */}
+      <div className="filtros-grid">
+        <select value={areaFiltro} onChange={e => setAreaFiltro(e.target.value)}>
+          <option>Todas</option>
+          {AREAS.map(a => <option key={a}>{a}</option>)}
+        </select>
+        <select value={statusFiltro} onChange={e => setStatusFiltro(e.target.value)}>
+          <option>Todos</option>
+          {STATUS.map(s => <option key={s}>{s}</option>)}
+        </select>
+        <select value={tipoBolsaFiltro} onChange={e => setTipoBolsaFiltro(e.target.value)}>
+          <option>Todos</option>
+          {TIPOS_BOLSA.map(t => <option key={t}>{t}</option>)}
+        </select>
+      </div>
 
-      {/* Lateral do hero: Radial */}
-      <section className="tile-radial">
-        <Card title="Distribuição de status">
-          <div className="chart-wrap">
-            <ResponsiveContainer width="100%" height="100%">
-              <RadialBarChart cx="50%" cy="50%" innerRadius="20%" outerRadius="90%" barSize={14} data={statusDistrib}>
-                <RadialBar background dataKey="value" />
-                <Legend />
-                <Tooltip />
-              </RadialBarChart>
-            </ResponsiveContainer>
-          </div>
-        </Card>
-      </section>
+      {/* MÉTRICAS */}
+      <div className="cards-grid">
+        <StatCard title="Projetos Ativos" value={estatisticas.projetosAtivos} />
+        <StatCard title="Projetos Concluídos" value={estatisticas.projetosConcluidos} />
+        <StatCard title="Bolsistas" value={estatisticas.bolsistas} />
+        <StatCard title="Editais Abertos" value={estatisticas.editaisAbertos} />
+        <StatCard title="Relatórios Pendentes" value={estatisticas.relatoriosPendentes} />
+        <StatCard title="Taxa de Conclusão (%)" value={estatisticas.taxaConclusao} />
+      </div>
 
-      {/* Linha 2: Barras + Barras empilhadas + Pizza */}
-      <section className="tile-centros">
-        <Card title="Nº de projetos por centro">
-          <div className="chart-wrap">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={porCentro}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="nome" />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="projetos" fill="#0050B3" radius={[6,6,0,0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
+      {/* GRÁFICOS */}
+      <div className="section-grid">
+        <Card title="Aprovações e Reprovações">
+          <ResponsiveContainer width="100%" height={200}>
+            <AreaChart data={aprovadosPorMes}>
+              <defs>
+                <linearGradient id="gradAprov" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#10b981" stopOpacity={0.8}/>
+                  <stop offset="95%" stopColor="#10b981" stopOpacity={0.05}/>
+                </linearGradient>
+                <linearGradient id="gradReprov" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#ef4444" stopOpacity={0.8}/>
+                  <stop offset="95%" stopColor="#ef4444" stopOpacity={0.05}/>
+                </linearGradient>
+              </defs>
+              <XAxis dataKey="mes" tick={{ fill: 'var(--texto)' }} />
+              <YAxis tick={{ fill: 'var(--texto)' }} />
+              <Tooltip wrapperClassName="chart-tooltip"/>
+              <Area type="monotone" dataKey="aprovados" stroke="#10b981" fill="url(#gradAprov)" />
+              <Area type="monotone" dataKey="reprovados" stroke="#ef4444" fill="url(#gradReprov)" />
+            </AreaChart>
+          </ResponsiveContainer>
         </Card>
-      </section>
 
-      <section className="tile-status">
-        <Card title="Status por centro">
-          <div className="chart-wrap">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={statusPorCentro}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="nome" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="enviados" stackId="a" fill="#8c8c8c" />
-                <Bar dataKey="analise"  stackId="a" fill="#0050B3" />
-                <Bar dataKey="aprovados" stackId="a" fill="#22c55e" />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
+        <Card title="Distribuição de Bolsas por Área">
+          <ResponsiveContainer width="100%" height={200}>
+            <PieChart>
+              <Pie data={bolsasPorArea} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80} label>
+                {bolsasPorArea.map((_, i) => (
+                  <Cell key={i} fill={COLORS[i % COLORS.length]} />
+                ))}
+              </Pie>
+              <Legend />
+              <Tooltip />
+            </PieChart>
+          </ResponsiveContainer>
         </Card>
-      </section>
 
-      <section className="tile-areas">
-        <Card title="Áreas de conhecimento mais frequentes">
-          <div className="chart-wrap">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie data={areas} dataKey="valor" nameKey="nome" cx="50%" cy="50%" outerRadius={80} label>
-                  {areas.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
-                </Pie>
-                <Tooltip />
-                <Legend />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
+        <Card title="Progresso do Edital Atual">
+          <ResponsiveContainer width="100%" height={200}>
+            <AreaChart data={progressoEdital}>
+              <defs>
+                <linearGradient id="gradEdital" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#0077b6" stopOpacity={0.8}/>
+                  <stop offset="95%" stopColor="#0077b6" stopOpacity={0.05}/>
+                </linearGradient>
+              </defs>
+              <XAxis dataKey="etapa" tick={{ fill: 'var(--texto)' }} />
+              <YAxis domain={[0,100]} tick={{ fill: 'var(--texto)' }} />
+              <Tooltip wrapperClassName="chart-tooltip"/>
+              <Area type="monotone" dataKey="progresso" stroke="#00b4d8" fill="url(#gradEdital)" />
+            </AreaChart>
+          </ResponsiveContainer>
         </Card>
-      </section>
+      </div>
 
-      {/* Linha 3: Radar (full width) */}
-      <section className="tile-radar">
-        <Card title="Critérios médios por área (radar)">
-          <div className="chart-wrap">
-            <ResponsiveContainer width="100%" height="100%">
-              <RadarChart outerRadius={90} data={criteriosRadar}>
-                <PolarGrid />
-                <PolarAngleAxis dataKey="criterio" />
-                <PolarRadiusAxis />
-                <Radar name="Computação" dataKey="Computação" stroke="#0050B3" fill="#0050B3" fillOpacity={0.2} />
-                <Radar name="Medicina"   dataKey="Medicina"   stroke="#FFD700" fill="#FFD700" fillOpacity={0.2} />
-                <Radar name="Biologia"   dataKey="Biologia"   stroke="#003366" fill="#003366" fillOpacity={0.2} />
-                <Radar name="Educação"   dataKey="Educação"   stroke="#8c8c8c" fill="#8c8c8c" fillOpacity={0.2} />
-                <Legend />
-                <Tooltip />
-              </RadarChart>
-            </ResponsiveContainer>
-          </div>
+      {/* NOTIFICAÇÕES E PRAZOS */}
+      <div className="section-grid mt-6">
+        <Card title="Notificações Recentes">
+          <ul className="stack">
+            {notificacoes.map(n => (
+              <li key={n.id} className="row-soft hover-lift">
+                <span className="text-sm">{n.texto}</span>
+                <span className={n.tipo === 'urgente' ? 'badge badge-red pulse' : 'badge badge-gold'}>
+                  {n.tipo}
+                </span>
+              </li>
+            ))}
+          </ul>
         </Card>
-      </section>
 
-      {/* Linha 4: Bolsas (compacto) */}
-      <section className="tile-bolsas">
-        <Card title="Tipos de bolsas">
-          <div className="chart-wrap">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={bolsas}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="tipo" />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="valor" fill="#FFD700" radius={[6,6,0,0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
+        <Card title="Projetos Filtrados">
+          <ul className="stack">
+            {projetosFiltrados.slice(0, 6).map(p => (
+              <li key={p.id} className="row hover-lift">
+                <div className="text-sm">
+                  <div className="font-medium">{p.titulo}</div>
+                  <div className="muted">{p.area} — {p.coordenador}</div>
+                  <div className="muted">Prazo: {p.prazo}</div>
+                </div>
+                <span className={getStatusClass(p.status)}>{p.status}</span>
+              </li>
+            ))}
+          </ul>
         </Card>
-      </section>
+      </div>
     </div>
   )
 }

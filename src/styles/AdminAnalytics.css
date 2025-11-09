@@ -1,138 +1,105 @@
-/* =========================================
-   Página: Admin Analytics
-   Arquivo: AdminAnalytics.css
-   Escopo: .page-admin-analytics
-========================================= */
-
-.page-admin-analytics {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
-  padding: 1rem 1.25rem;
-  background: var(--ufpb-light, #f8fafc);
+.dashboard-page {
+  padding: 1.5rem;
+  background: #f5f5f7;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
 }
 
-/* ---------- Cards ---------- */
-.page-admin-analytics .card {
-  border-radius: 14px;
-  background: #fff;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+.page-header {
   display: flex;
-  flex-direction: column;
   justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
 }
 
-/* ---------- Títulos dos gráficos ---------- */
-.page-admin-analytics .card-header {
-  font-size: 0.75rem; /* menor título */
+.page-title {
+  font-size: 1.8rem;
   font-weight: 600;
-  letter-spacing: 0.4px;
-  color: #4b5563;
+  color: var(--texto, #1f2937);
+}
+
+.pill {
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
   text-transform: uppercase;
-  background: #fff;
-  padding: 0.5rem 0.9rem 0.2rem;
-  border-bottom: 1px solid var(--borda);
 }
 
-/* ---------- Gráficos ---------- */
-.page-admin-analytics .chart-wrap {
-  height: 16rem;
-  width: 100%;
-}
-
-/* tooltip */
-.page-admin-analytics .recharts-default-tooltip {
-  font-size: 0.75rem; /* menor texto no tooltip */
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid var(--borda);
-  border-radius: 6px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-/* legendas dos gráficos */
-.page-admin-analytics .recharts-legend-item text {
-  font-size: 0.75rem !important; /* reduz legendas */
-  fill: #4b5563;
-}
-
-.page-admin-analytics .recharts-cartesian-axis-tick text {
-  font-size: 0.72rem !important; /* rótulos do eixo */
-  fill: #4b5563;
-}
-
-/* ---------- Toolbar (Filtros) ---------- */
-.page-admin-analytics .toolbar {
-  grid-column: 1 / -1;
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  justify-content: flex-end;
-}
-
-.page-admin-analytics .toolbar .input {
-  border: 1px solid var(--borda);
-  border-radius: 10px;
-  padding: 8px 10px;
-  background: #fff;
-  font-size: 0.8rem;
-}
-
-/* ---------- Botões ---------- */
-.page-admin-analytics .btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
-  border-radius: 8px;
-  padding: 0.45rem 0.9rem;
-  font-weight: 600;
-  font-size: 0.8rem; /* botão menor */
-  cursor: pointer;
-  border: none;
-  transition: all 0.2s ease;
-}
-
-.page-admin-analytics .btn-gold {
-  background-color: #ffd700;
-  color: #3b3b3b;
-}
-.page-admin-analytics .btn-gold:hover {
-  background-color: #f5c400;
-  filter: brightness(1.05);
-}
-
-.page-admin-analytics .btn-primary {
-  background-color: var(--ufpb-blue, #0050b3);
+.pill-gold {
+  background: #ffb703;
   color: #fff;
 }
-.page-admin-analytics .btn-primary:hover {
-  filter: brightness(1.1);
-}
 
-/* Container de ações */
-.page-admin-analytics .actions {
+.filtros-grid {
   display: flex;
-  gap: 10px;
-  margin-top: 1rem;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 
-/* ---------- Responsividade ---------- */
-@media (max-width: 640px) {
-  .page-admin-analytics {
-    padding: 0.75rem;
-  }
+.filtros-grid select {
+  padding: 0.5rem 0.8rem;
+  border-radius: 0.375rem;
+  border: 1px solid #d1d5db;
+  background: #fff;
+  cursor: pointer;
+}
 
-  .page-admin-analytics .card-header {
-    font-size: 0.7rem;
-    padding: 0.5rem 0.7rem 0.2rem;
-  }
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
 
-  .page-admin-analytics .chart-wrap {
-    height: 220px;
-  }
+.section-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.2rem;
+}
 
-  .page-admin-analytics .recharts-legend-item text,
-  .page-admin-analytics .recharts-cartesian-axis-tick text {
-    font-size: 0.68rem !important;
-  }
+.chart-wrap {
+  width: 100%;
+  height: 200px;
+}
+
+.stack {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.row-soft, .row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+  background: #fff;
+  margin-bottom: 0.3rem;
+}
+
+.row-soft:hover, .row:hover {
+  background: #e7f5ff;
+}
+
+.badge {
+  padding: 0.2rem 0.6rem;
+  border-radius: 0.375rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+.badge-green { background: #10b981; color: #fff; }
+.badge-red { background: #ef4444; color: #fff; }
+.badge-amber { background: #f59e0b; color: #fff; }
+.badge-blue { background: #3b82f6; color: #fff; }
+.badge-neutral { background: #6b7280; color: #fff; }
+
+.hover-lift {
+  transition: all 0.2s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-3px);
 }

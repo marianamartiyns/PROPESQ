@@ -1,3 +1,5 @@
+
+// src/pages/Dashboard.tsx - inicio
 import React from 'react'
 import StatCard from '@/components/StatCard'
 import Card from '@/components/Card'

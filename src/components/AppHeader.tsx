@@ -52,7 +52,7 @@ export default function AppHeader() {
 
   const base: Item[] =
     role === "ADMINISTRADOR"
-      ? [{ to: "/", label: "Dashboard", icon: <Home size={18} /> }]
+      ? [{ to: "/", label: "Início", icon: <Home size={18} /> }]
       : [];
 
   const discente: Section = {
@@ -81,7 +81,7 @@ export default function AppHeader() {
     title: "Administrador",
     items: [
       { to: "/painel-gerencial", label: "Painel Gerencial", icon: <LineChart size={18} /> },
-      { to: "/configuracoes", label: "Configurações do Sistema", icon: <Settings size={18} /> },
+      // { to: "/configuracoes", label: "Configurações do Sistema", icon: <Settings size={18} /> },
       { to: "/acompanhamento", label: "Editais", icon: <Notebook size={18} /> },
     ],
   };

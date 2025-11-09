@@ -88,7 +88,7 @@ export default function Reports() {
   return (
     <div className="page-reports">
       <Card title="Relatórios">
-        {/* KPIs (mantidos) */}
+        {/* KPIs */}
         <div className="kpis">
           <div className="kpi"><div className="kpi-label">Total</div><div className="kpi-value">{resumo.total}</div></div>
           <div className="kpi"><div className="kpi-label">Entregues</div><div className="kpi-value kpi-success">{resumo.entregues}</div></div>
