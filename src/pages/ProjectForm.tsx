@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Card from '@/components/Card'
 import '@/styles/ProjectForm.css'
+import { Helmet } from 'react-helmet'
 
 export default function ProjectForm() {
   const [status, setStatus] = useState<'Rascunho' | 'Enviado'>('Rascunho')

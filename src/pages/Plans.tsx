@@ -4,6 +4,7 @@ import Table from '@/components/Table'
 import { planos, projetos } from '@/mock/data'
 import { Link } from 'react-router-dom'
 import '@/styles/Plans.css'
+import { Helmet } from 'react-helmet'
 
 type RoleType = 'DISCENTE' | 'COORDENADOR' | 'ADMINISTRADOR'
 

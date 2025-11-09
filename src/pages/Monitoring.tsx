@@ -3,6 +3,8 @@
 import React from 'react'
 import Card from '@/components/Card'
 import { FaCheckCircle, FaClock, FaTimesCircle, FaFileAlt } from 'react-icons/fa'
+import '@/styles/Monitoring.css'
+import { Helmet } from 'react-helmet'
 
 const etapas = [
   { nome: 'Submissão', data: '2025-09-01', done: true },

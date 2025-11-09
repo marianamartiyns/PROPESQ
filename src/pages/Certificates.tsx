@@ -4,6 +4,7 @@ import Table from '@/components/Table';
 import { certificados } from '@/mock/data';
 import { Link } from 'react-router-dom';
 import '@/styles/Certificates.css';
+import { Helmet } from 'react-helmet'
 
 type Certificado = {
   id: string | number;

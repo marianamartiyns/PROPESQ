@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useAuth, Role } from '@/context/AuthContext'
 import '@/styles/Login.css'
 import logo from '@/styles/imgs/logo_propesq.png'
+import { Helmet } from 'react-helmet'
 
 export default function Login() {
   const { login } = useAuth()

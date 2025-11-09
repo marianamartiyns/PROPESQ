@@ -4,6 +4,7 @@ import Card from '@/components/Card';
 import Table from '@/components/Table';
 import { relatorios } from '@/mock/data';
 import '@/styles/Reports.css';
+import { Helmet } from 'react-helmet'
 
 type Rel = {
   id: string | number;

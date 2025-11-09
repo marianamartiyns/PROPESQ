@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import Card from '@/components/Card';
 import '@/styles/CertificateView.css';
+import { Helmet } from 'react-helmet'
 
 export default function CertificateView() {
   const { id } = useParams<{ id: string }>();

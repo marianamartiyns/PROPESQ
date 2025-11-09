@@ -1,6 +1,7 @@
 import React from 'react'
 import Card from '@/components/Card'
 import { projetos } from '@/mock/data'
+import { Helmet } from 'react-helmet'
 
 export default function PlanForm() {
   return (

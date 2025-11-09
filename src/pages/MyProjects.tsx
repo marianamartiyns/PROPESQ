@@ -4,6 +4,7 @@ import Table from '@/components/Table'
 import { projetos } from '@/mock/data'
 import { useAuth } from '@/context/AuthContext'
 import '@/styles/MyProjects.css'
+import { Helmet } from 'react-helmet'
 
 const statusClass = (status: string) => {
   const s = status?.toLowerCase?.() || ''

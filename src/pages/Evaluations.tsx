@@ -4,6 +4,7 @@ import Table from '@/components/Table'
 import { projetos } from '@/mock/data'
 import { Link } from 'react-router-dom'
 import '@/styles/Evaluations.css'
+import { Helmet } from 'react-helmet'
 
 export default function Evaluations() {
   const atribuídos = projetos.filter(p =>

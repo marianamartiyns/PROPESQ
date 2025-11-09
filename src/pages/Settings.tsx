@@ -3,6 +3,7 @@ import React, { useRef, useState } from 'react'
 import Card from '@/components/Card'
 import { useAuth } from '@/context/AuthContext'
 import '@/styles/Settings.css'
+import { Helmet } from 'react-helmet'
 
 export default function Settings() {
   const { user } = useAuth()
