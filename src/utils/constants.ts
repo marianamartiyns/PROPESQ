@@ -1,3 +1,5 @@
+// src/utils/constants.ts - sem utilização de variáveis de ambiente
+
 export const COLORS = {
   blue: '#003366',
   gold: '#FFD700',

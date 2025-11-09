@@ -1,14 +1,14 @@
-/* Scrollbar discreta para wrappers de tabela */
+
 ::-webkit-scrollbar {
   height: 10px;
   width: 10px;
 }
 ::-webkit-scrollbar-thumb {
-  background: #d4d4d8; /* gray-300 */
+  background: #d4d4d8; 
   border-radius: 8px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #a1a1aa; /* gray-400 */
+  background: #a1a1aa; 
 }
 ::-webkit-scrollbar-track {
   background: transparent;
@@ -18,14 +18,13 @@
   transition: padding 0.2s ease;
 }
 
-/* Mais espaçamento entre colunas */
 .table-container table {
   border-collapse: separate;
-  border-spacing: 0 0; /* mantém espaçamento vertical neutro */
+  border-spacing: 0 0; 
 }
 
 .table-container th,
 .table-container td {
-  padding-left: 3rem !important; /* 24px */
+  padding-left: 3rem !important; 
   padding-right: 3rem !important;
 }

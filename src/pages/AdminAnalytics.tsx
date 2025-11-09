@@ -112,7 +112,6 @@ export default function DashboardAdminPIBIC(){
     <div className="dashboard-page">
 
       <Helmet>
-        <title>Dashboard Administrativo</title>
         <link rel="icon" type="image/png" href="/src/styles/imgs/favicon-32x32.png" />
       </Helmet>
 

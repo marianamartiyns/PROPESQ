@@ -1,4 +1,5 @@
-// src/pages/CertificateView.tsx
+// src/pages/CertificateView.tsx - não utilizado atualmente
+
 import React, { useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { QRCodeSVG as QRCode } from 'qrcode.react';
@@ -55,7 +56,7 @@ export default function CertificateView() {
   }
 
   return (
-    <div className="page-cert-view">{/* classe vai no wrapper */}
+    <div className="page-cert-view">
       <Card title="Verificação de Certificado">
         {/* Faixa superior */}
         <header>

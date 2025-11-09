@@ -1,12 +1,9 @@
-/* =============================
-   Página: MyProjects
-   ============================= */
+
 
 .page-myprojects .projects-list-section {
   margin-top: 24px;
 }
 
-/* Cabeçalho da listagem */
 .page-myprojects .projects-list-header {
   display: flex;
   align-items: center;
@@ -39,10 +36,6 @@
   font-weight: 600;
 }
 
-/* =============================
-   Tabela
-   ============================= */
-
 .page-myprojects .table-wrap {
   overflow: auto;
   border-radius: 12px;
@@ -52,10 +45,6 @@
 .page-myprojects .table-wrap td {
   padding: 10px 16px;
 }
-
-/* =============================
-   Estado vazio
-   ============================= */
 
 .page-myprojects .empty-state {
   padding: 24px;
@@ -75,10 +64,6 @@
   margin-top: 4px;
 }
 
-/* =============================
-   Utilitárias locais
-   ============================= */
-
 .page-myprojects .mono {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
 }
@@ -91,10 +76,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
-/* =============================
-   Badges
-   ============================= */
 
 .page-myprojects .badge {
   display: inline-flex;
@@ -132,9 +113,6 @@
   border-color: #e5e7eb;
 }
 
-/* =============================
-   Responsividade
-   ============================= */
 
 @media (max-width: 720px) {
   .page-myprojects .projects-list-header {

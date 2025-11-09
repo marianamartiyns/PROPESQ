@@ -99,23 +99,21 @@
   user-select: none;
 }
 
-/* ===== Tabela – MESMO ESTILO DE PLANS ===== */
+/* tabela */
 
 .page-certificates .table-wrap {
   overflow: auto;
   border-radius: 12px;
-  background: #fff;                  /* mantém card branco */
-  border: 1px solid var(--borda);    /* borda externa como no toolbar */
+  background: #fff;                 
+  border: 1px solid var(--borda);  
 }
 
-/* Tabela interna */
 .page-certificates .table-wrap table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
 }
 
-/* Cabeçalho fixo, cores iguais a Plans */
 .page-certificates .table-wrap thead th {
   position: sticky;
   top: 0;
@@ -129,17 +127,15 @@
 
 /* Células */
 .page-certificates .table-wrap tbody td {
-  padding: 14px 16px; /* mesmo padding de Plans */
+  padding: 14px 16px; 
   border-bottom: 1px solid var(--line, #e5e7eb);
   vertical-align: top;
 }
 
-/* Hover igual a Plans */
 .page-certificates .table-wrap tbody tr:hover {
   background: #f9fafb;
 }
 
-/* Densidade compacta (quando .dense="compact") */
 .page-certificates .table-wrap.compact table td,
 .page-certificates .table-wrap.compact table th {
   padding-top: 6px !important;
@@ -147,7 +143,6 @@
   font-size: 12px;
 }
 
-/* —— Empty state igual ao de Plans —— */
 .empty-state {
   text-align: center;
   padding: 36px 16px;
@@ -172,8 +167,6 @@
 
 
 /* ===== Chips, utilitários e botões ===== */
-
-/* Chip do tipo (ex.: 'Declaração', 'Certificado', etc.) */
 .page-certificates .tipo-chip {
   display: inline-flex;
   align-items: center;
@@ -195,31 +188,26 @@
   white-space: nowrap;
 }
 
-/* Mono para ID como em Plans */
 .mono {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
-/* Botões compactos para caber nas colunas próprias */
 .btn.btn-sm {
   padding: 6px 10px;
   font-size: 12px;
   border-radius: 8px;
 }
 
-/* Fallback caso não exista .btn-gold global */
 .page-certificates .btn.btn-gold {
   background: #d4af37;
   color: #fff;
 }
 
-/* Desabilitado via aria-disabled */
 .page-certificates .btn[aria-disabled="true"] {
   opacity: .55;
   pointer-events: none;
 }
 
-/* Acessibilidade: foco visível nos links de ação */
 .page-certificates a.btn:focus-visible {
   outline: 3px solid rgba(58,109,216,.25);
   outline-offset: 2px;

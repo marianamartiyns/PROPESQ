@@ -8,7 +8,7 @@ export type Col<T> = {
   render?: (row: T, index: number) => React.ReactNode;
   align?: "left" | "center" | "right";
   className?: string;
-  width?: string; // ex: 'w-40', 'min-w-[200px]'
+  width?: string; 
 };
 
 type Density = "compact" | "normal" | "comfortable";
@@ -26,7 +26,6 @@ type TableProps<T extends Record<string, any>> = {
   onRowClick?: (row: T, index: number) => void;
 };
 
-// padding responsivo com base fixa + ajuste fluido
 const PAD_X = "px-[clamp(1.25rem,1rem+0.8vw,2rem)]"; 
 const PAD_Y = "py-[clamp(0.6rem,0.4rem+0.4vw,1rem)]";
 

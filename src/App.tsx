@@ -62,7 +62,6 @@ export default function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
 
-        {/* Página inicial dinâmica */}
         <Route path="/" element={<Protected><HomeRedirect /></Protected>} />
 
         {/* Rotas principais */}

@@ -1,6 +1,5 @@
-/* src/styles/Reports.css  — DROP-IN REPLACEMENT */
+/* src/styles/Reports.css  */
 
-/* ==================== Tokens locais (escopados) ==================== */
 .page-reports {
   --line: var(--borda, #dfe3eb);
   --muted: #6b7280;
@@ -171,7 +170,6 @@
 .page-reports .btn.btn-primary:hover { box-shadow: 0 8px 20px rgba(43,69,128,.22); }
 
 
-/* “Consultar” com look outline sofisticado — aplica no segundo botão por padrão */
 .page-reports .qa-actions .btn:not(.btn-primary) {
   background: #fff;
   color: var(--brand);
@@ -230,7 +228,7 @@
 }
 
 .page-reports .table-wrap tbody td {
-  padding: 14px 16px;               /* mesmo respiro */
+  padding: 14px 16px;             
   border-bottom: 1px solid var(--line, #dfe3eb);
   vertical-align: top;
 }
@@ -239,7 +237,7 @@
   background: #f9fafb;
 }
 
-/* ===== Empty state (igual ao Plans) ===== */
+
 .page-reports .empty-state {
   text-align: center;
   padding: 32px 12px;
@@ -255,7 +253,6 @@
 }
 .page-reports .empty-subtitle { font-size: .95rem; }
 
-/* (opcional) utilitários usados em Plans */
 .page-reports .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
 .page-reports .muted { color: var(--muted, #6b7280); }
 

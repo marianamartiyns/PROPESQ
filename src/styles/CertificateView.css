@@ -1,7 +1,3 @@
-/* ===========================
-   CertificateView.css
-   Escopo: apenas CertificateView (prefixo .page-cert-view)
-   =========================== */
 
 .page-cert-view {
   --cv-radius: 14px;
@@ -18,15 +14,11 @@
   color: var(--cv-text);
 }
 
-/* Card padding específico da página */
 .page-cert-view .card-body,
 .page-cert-view {
   padding: clamp(16px, 2.4vw, 24px);
 }
 
-/* ===========================
-   Cabeçalho superior
-   =========================== */
 .page-cert-view header {
   display: flex;
   align-items: center;
@@ -52,9 +44,6 @@
   color: var(--cv-accent);
 }
 
-/* ===========================
-   Seções e divisores
-   =========================== */
 .page-cert-view section {
   display: grid;
   gap: 18px;
@@ -67,9 +56,6 @@
   margin: 2px 0;
 }
 
-/* ===========================
-   Topo (brasão + org) 
-   =========================== */
 .page-cert-view .cv-top {
   display: grid;
   grid-template-columns: auto 1fr;
@@ -112,9 +98,6 @@
   line-height: 1.2;
 }
 
-/* ===========================
-   Grid principal (detalhes + aside QR)
-   =========================== */
 .page-cert-view .cv-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -128,9 +111,6 @@
   }
 }
 
-/* ===========================
-   Títulos das seções internas
-   =========================== */
 .page-cert-view .cv-h2 {
   display: flex;
   align-items: center;
@@ -147,9 +127,6 @@
   color: var(--cv-accent-2);
 }
 
-/* ===========================
-   Tabela de detalhes (duas colunas)
-   =========================== */
 .page-cert-view .cv-table {
   border: 1px solid var(--cv-line);
   border-radius: 12px;
@@ -214,7 +191,6 @@
   font-size: 0.88rem;
 }
 
-/* Dica */
 .page-cert-view .tip {
   margin-top: 10px;
   padding: 10px 12px;
@@ -225,9 +201,6 @@
   font-size: 0.92rem;
 }
 
-/* ===========================
-   Aside (QR code)
-   =========================== */
 .page-cert-view .cv-aside {
   position: relative;
 }
@@ -259,9 +232,6 @@
   color: var(--cv-muted);
 }
 
-/* ===========================
-   Ações rápidas (tabela de 3 colunas)
-   =========================== */
 .page-cert-view .cv-actions {
   display: grid;
   gap: 10px;
@@ -354,20 +324,16 @@
   outline-offset: 2px;
 }
 
-/* Nota final */
 .page-cert-view .note {
   margin-top: 8px;
   color: var(--cv-muted);
   font-size: 0.9rem;
 }
 
-/* ===========================
-   Responsividade
-   =========================== */
 @media (max-width: 639px) {
   .page-cert-view .cv-table .head,
   .page-cert-view .cv-table .row {
-    grid-template-columns: 1fr; /* empilha chave/valor */
+    grid-template-columns: 1fr; 
   }
 
   .page-cert-view .cv-table .cell.key {
@@ -392,16 +358,12 @@
   }
 }
 
-/* ===========================
-   Acessibilidade / preferências
-   =========================== */
 @media (prefers-reduced-motion: reduce) {
   .page-cert-view .pill-btn {
     transition: none;
   }
 }
 
-/* Foco geral dentro do escopo da página */
 .page-cert-view a:focus-visible,
 .page-cert-view button:focus-visible {
   outline: 3px solid color-mix(in srgb, var(--cv-accent-2) 30%, #ffffff);
@@ -420,9 +382,6 @@
   text-decoration: underline;
 }
 
-/* ===========================
-   Impressão
-   =========================== */
 @media print {
   /* Tornar o cartão full-bleed limpo */
   .page-cert-view,
@@ -468,7 +427,7 @@
     padding: 8px;
   }
 
-  .page-cert-view .table3 { /* oculta ações na impressão para sair só dados principais */
+  .page-cert-view .table3 { 
     display: none !important;
   }
 
@@ -476,7 +435,6 @@
     display: none !important;
   }
 
-  /* Evitar quebras dentro de blocos */
   .page-cert-view .cv-table,
   .page-cert-view .cv-aside,
   .page-cert-view .cv-details {

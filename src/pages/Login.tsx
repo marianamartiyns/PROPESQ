@@ -77,7 +77,6 @@ export default function Login() {
             required
           />
 
-          {/* 🔹 Seleção de papéis atualizada */}
           <div className="role-group" role="group" aria-label="Escolher perfil">
             {Roles.map((r) => (
               <button

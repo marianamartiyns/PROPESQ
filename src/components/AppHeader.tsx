@@ -1,3 +1,6 @@
+
+// src/components/AppHeader.tsx - menu superior da aplicação
+
 import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import {
@@ -188,7 +191,7 @@ export default function AppHeader() {
         </ul>
       </nav>
 
-      {/* MENU MOBILE */}
+      {/* MENU MOBILE - falta ajustes*/}
       <nav
         className={cx("appheader__mobile", mobileOpen && "is-open")}
         aria-label="Menu principal (mobile)"

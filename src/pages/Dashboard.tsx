@@ -1,10 +1,11 @@
 // src/pages/Dashboard.tsx - inicio
+
 import React from 'react'
 import Card from '@/components/Card'
 import '@/styles/Dashboard.css'
 import { Helmet } from 'react-helmet'
 
-// Dados fake para simulação
+// Dados fake 
 const indicadores = [
   { title: 'Projetos Ativos', value: 42, icon: '📁' },
   { title: 'Editais Abertos', value: 5, icon: '📄' },
@@ -31,7 +32,6 @@ export default function Home() {
     <div className="home-page">
       {/* Favicon e título da página */}
       <Helmet>
-        <title>Dashboard Administrativo</title>
         <link rel="icon" type="image/png" href="/src/styles/imgs/favicon-32x32.png" />
       </Helmet>
 

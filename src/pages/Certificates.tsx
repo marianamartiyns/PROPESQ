@@ -8,13 +8,13 @@ import { Helmet } from 'react-helmet'
 
 type Certificado = {
   id: string | number;
-  nome: string;       // Tipo
-  pessoa: string;     // Nome
-  projetoId: string;  // Projeto
-  data: string;       // ISO date ou DD/MM/YYYY
-  pdfUrl?: string;    // opcional no mock
-  download?: never;   // para uso na tabela
-  verificar?: never;  // para uso na tabela
+  nome: string;       
+  pessoa: string;     
+  projetoId: string;  
+  data: string;       
+  pdfUrl?: string;    
+  download?: never;   
+  verificar?: never;  
 };
 
 function normalize(str: string) {

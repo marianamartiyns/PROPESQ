@@ -1,4 +1,4 @@
-/* ===== Project Form Page Wrapper ===== */
+
 .page-project-form {
   display: flex;
   flex-direction: column;
@@ -30,7 +30,6 @@
   opacity: 0.8;
 }
 
-/* Corpo em grid com aside */
 .page-project-form .page-body {
   display: grid;
   grid-template-columns: 1fr;
@@ -50,7 +49,7 @@
 }
 .page-project-form .aside {
   position: sticky;
-  top: 12px; /* respeita header fixo caso exista */
+  top: 12px; 
   display: grid;
   gap: 12px;
 }
@@ -120,11 +119,11 @@
   cursor: pointer;
 }
 
-/* Texto de ajuda */
+
 .page-project-form .help {
   margin-top: 4px;
   font-size: 11px;
-  color: #6b7280; /* gray-500 */
+  color: #6b7280;
 }
 
 /* Ações */
@@ -135,7 +134,6 @@
   margin-top: 4px;
 }
 
-/* Status pill compartilhado (cabeçalho + aside) */
 .page-project-form .status-pill {
   --pill-bg: #eef2ff;
   --pill-fg: #1e40af;
@@ -151,12 +149,12 @@
   border: 1px solid rgba(30, 64, 175, 0.15);
 }
 .page-project-form .status-pill.draft {
-  --pill-bg: #fff7ed;  /* laranja claro */
+  --pill-bg: #fff7ed;  
   --pill-fg: #9a3412;
   border-color: rgba(154, 52, 18, 0.15);
 }
 .page-project-form .status-pill.ok {
-  --pill-bg: #ecfdf5;  /* verde claro */
+  --pill-bg: #ecfdf5;  
   --pill-fg: #065f46;
   border-color: rgba(6, 95, 70, 0.15);
 }
@@ -176,10 +174,9 @@
   display: grid;
   gap: 6px;
   font-size: 13px;
-  color: #475569; /* slate-600 */
+  color: #475569; /
 }
 
-/* Ajustes sutis do Card dentro da página */
 .page-project-form .card + .card {
   margin-top: 0;
 }

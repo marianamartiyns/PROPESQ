@@ -34,7 +34,7 @@ export default function Reports() {
     return { total, entregues, atrasados, pendentes };
   }, []);
 
-  // Contadores por tipo (mostrados nos botões/abas)
+  // Contadores por tipo
   const contadores = useMemo(() => {
     const parciais = (relatorios as Rel[]).filter(r => r.tipo.toLowerCase().includes('parc')).length;
     const finais = (relatorios as Rel[]).filter(r => r.tipo.toLowerCase().includes('final')).length;
@@ -72,15 +72,12 @@ export default function Reports() {
   function onFileSelected(e: React.ChangeEvent<HTMLInputElement>, tipo: 'Parcial' | 'Final') {
     const file = e.target.files?.[0];
     if (!file) return;
-    // Aqui você pode integrar com sua API. Por enquanto, apenas um log.
     console.log(`Arquivo selecionado (${tipo}):`, file.name);
-    // reset opcional
     e.target.value = '';
   }
 
   function consultar(tipo: Aba) {
     setAba(tipo);
-    // rolar até a tabela
     setTimeout(() => {
       tabelaRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 0);

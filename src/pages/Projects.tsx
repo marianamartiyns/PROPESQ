@@ -40,7 +40,6 @@ type Projeto = {
   area: string
   status: string
   prazo: string
-  // campos que podem (ou não) existir no mock
   tipo?: 'interno' | 'externo'
   ano?: number | string
   pesquisador?: string
@@ -584,7 +583,7 @@ export default function Projects() {
           </div>
         </div>
 
-        {/* Gerar relatório (linha sem label visível, como no print) */}
+        {/* Gerar relatório*/}
         <div className="criteria-row">
           <div className="criteria-offset" />
           <div className="criteria-field">

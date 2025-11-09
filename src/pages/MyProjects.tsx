@@ -1,3 +1,5 @@
+// src/pages/MyProjects.tsx - pagina para DISCENTE E COORDENADOR
+
 import React, { useMemo } from 'react'
 import Card from '@/components/Card'
 import Table from '@/components/Table'
@@ -21,7 +23,6 @@ export default function MyProjects() {
   const role = user?.role?.toUpperCase?.() || ''
 
   const filtered = useMemo(() => {
-    // Gera dados simulando função, carga horária e datas
     return projetos.map(p => {
       let funcao = '—'
       let ch = '—'

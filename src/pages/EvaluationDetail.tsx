@@ -1,3 +1,5 @@
+// src/pages/EvaluationDetail.tsx - 
+
 import React, { useState } from 'react'
 import Card from '@/components/Card'
 import { useParams } from 'react-router-dom'
