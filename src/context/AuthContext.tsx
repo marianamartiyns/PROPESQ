@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useMemo, useState } from 'react'
 
-export type Role = 'DISCENTE' | 'DOCENTE' | 'PROPESQ'
+export type Role = 'DISCENTE' | 'COORDENADOR' | 'ADMINISTRADOR';
 
 type User = {
   [x: string]: any

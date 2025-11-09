@@ -3,6 +3,7 @@ import "@/styles/Table.css";
 
 export type Col<T> = {
   key: keyof T;
+  label?: string;
   header: React.ReactNode;
   render?: (row: T, index: number) => React.ReactNode;
   align?: "left" | "center" | "right";

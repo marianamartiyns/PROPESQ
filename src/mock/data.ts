@@ -1,9 +1,51 @@
 import { PROJECT_STATUS } from '@/utils/constants'
 
 export const projetos = [
-  { id: 'P-2025-001', titulo: 'Visão Computacional para Fenologia do Semiárido', centro: 'CCEN', area: 'Ciência da Computação', status: 'Em análise', bolsistas: 1, voluntarios: 1, prazo: '2025-11-15' },
-  { id: 'P-2025-002', titulo: 'Rede Neural para Diagnóstico de Doenças Tropicais', centro: 'CCS', area: 'Medicina', status: 'Aprovado', bolsistas: 2, voluntarios: 0, prazo: '2025-12-01' },
-  { id: 'P-2025-003', titulo: 'Banco de Dados de Aves da Paraíba', centro: 'CCT', area: 'Biologia', status: 'Rascunho', bolsistas: 0, voluntarios: 2, prazo: '2025-10-31' },
+  {
+    id: 'P-2025-001',
+    titulo: 'Visão Computacional para Fenologia do Semiárido',
+    centro: 'CCEN',
+    area: 'Ciência da Computação',
+    categoria: 'Pesquisa',
+    funcao: 'Coordenador',
+    ch: 20,
+    inicio: '2025-03-01',
+    fim: '2025-11-15',
+    status: 'Em análise',
+    bolsistas: 1,
+    voluntarios: 1,
+    prazo: '2025-11-15',
+  },
+  {
+    id: 'P-2025-002',
+    titulo: 'Rede Neural para Diagnóstico de Doenças Tropicais',
+    centro: 'CCS',
+    area: 'Medicina',
+    categoria: 'Extensão',
+    funcao: 'Participante',
+    ch: 12,
+    inicio: '2025-05-10',
+    fim: '2025-12-01',
+    status: 'Aprovado',
+    bolsistas: 2,
+    voluntarios: 0,
+    prazo: '2025-12-01',
+  },
+  {
+    id: 'P-2025-003',
+    titulo: 'Banco de Dados de Aves da Paraíba',
+    centro: 'CCT',
+    area: 'Biologia',
+    categoria: 'Iniciação Científica',
+    funcao: 'Voluntário',
+    ch: 10,
+    inicio: '2025-04-15',
+    fim: '2025-10-31',
+    status: 'Rascunho',
+    bolsistas: 0,
+    voluntarios: 2,
+    prazo: '2025-10-31',
+  },
 ]
 
 export const relatorios = [
@@ -21,7 +63,14 @@ export const planos = [
 ]
 
 export const certificados = [
-  { id: 'C-0001', nome: 'Certificado de Participação', pessoa: 'Discente Exemplo', projetoId: 'P-2024-017', codigo: 'UFPB-ABC123', data: '2025-08-31' },
+  {
+    id: 'C-0001',
+    nome: 'Certificado de Participação',
+    pessoa: 'Discente Exemplo',
+    projetoId: 'P-2024-017',
+    codigo: 'UFPB-ABC123',
+    data: '2025-08-31',
+  },
 ]
 
 export type ProjetoStatus = typeof PROJECT_STATUS[number]

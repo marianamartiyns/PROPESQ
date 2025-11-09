@@ -9,16 +9,20 @@ export default function Login() {
   const nav = useNavigate()
   const [searchParams] = useSearchParams()
 
-  // role inicial: URL ?role=... -> localStorage -> DISCENTE
+
+  const Roles = ['DISCENTE', 'COORDENADOR', 'ADMINISTRADOR']
+
   const initialRole = useMemo(() => {
     const fromUrl = (searchParams.get('role') || '').toUpperCase()
-    const validFromUrl = ['DISCENTE', 'DOCENTE', 'PROPESQ'].includes(fromUrl)
+    const validFromUrl = Roles.includes(fromUrl)
       ? (fromUrl as Role)
       : null
+
     const fromStorage = (localStorage.getItem('role') || '').toUpperCase()
-    const validFromStorage = ['DISCENTE', 'DOCENTE', 'PROPESQ'].includes(fromStorage)
+    const validFromStorage = Roles.includes(fromStorage)
       ? (fromStorage as Role)
       : null
+
     return validFromUrl || validFromStorage || ('DISCENTE' as Role)
   }, [searchParams])
 
@@ -32,7 +36,15 @@ export default function Login() {
     e.preventDefault()
     localStorage.setItem('role', role)
     login(email || 'usuario@ufpb.br', password, role)
-    nav('/')
+
+    // Redirecionamento por função
+    if (role === 'ADMINISTRADOR') {
+      nav('/') // Dashboard
+    } else if (role === 'DISCENTE' || role === 'COORDENADOR') {
+      nav('/projetos')
+    } else {
+      nav('/') // fallback
+    }
   }
 
   return (
@@ -41,8 +53,6 @@ export default function Login() {
         <div className="login-header">
           <img src={logo} alt="UFPB / PROPESQ" className="login-logo" />
           <h1 className="login-title-sigaa">PRÓ-REITORIA DE PESQUISA - UFPB</h1>
-          {/* subtítulo opcional abaixo do título, se quiser:
-          <p className="login-subtitle-small">PORTAL DO CONHECIMENTO</p> */}
         </div>
 
         <div className="login-panel">
@@ -66,17 +76,17 @@ export default function Login() {
             required
           />
 
-          {/* Chips de papéis*/}
+          {/* 🔹 Seleção de papéis atualizada */}
           <div className="role-group" role="group" aria-label="Escolher perfil">
-            {(['DISCENTE', 'DOCENTE', 'PROPESQ'] as Role[]).map((r) => (
+            {Roles.map((r) => (
               <button
                 type="button"
                 key={r}
                 className={`role-chip ${role === r ? 'is-active' : ''}`}
-                onClick={() => setRole(r)}
+                onClick={() => setRole(r as Role)}
                 aria-pressed={role === r}
               >
-                {r === 'DISCENTE' ? 'DISCENTE' : r === 'DOCENTE' ? 'DOCENTE' : 'SERVIDOR'}
+                {r}
               </button>
             ))}
           </div>

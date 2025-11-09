@@ -1,6 +1,3 @@
-// =============================
-// File: src/components/AppHeader.tsx
-// =============================
 import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import {
@@ -17,6 +14,7 @@ import {
   Settings,
   Menu as MenuIcon,
   X as CloseIcon,
+  FolderKanban,
 } from "lucide-react";
 
 import LogoImg from "@/styles/imgs/logo_propesq_imagem.png";
@@ -40,11 +38,7 @@ export default function AppHeader() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
 
-  React.useEffect(() => {
-    setMobileOpen(false);
-  }, [location.pathname]);
-
-  // sombra/elevacao ao rolar
+  React.useEffect(() => setMobileOpen(false), [location.pathname]);
   React.useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 4);
     onScroll();
@@ -52,52 +46,56 @@ export default function AppHeader() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const role = (user?.role as "DISCENTE" | "DOCENTE" | "PROPESQ") || "DISCENTE";
+  const role =
+    (user?.role as "DISCENTE" | "COORDENADOR" | "ADMINISTRADOR") || "DISCENTE";
 
-  const base: Item[] = [{ to: "/", label: "Dashboard", icon: <Home size={18} /> }];
+
+  const base: Item[] =
+    role === "ADMINISTRADOR"
+      ? [{ to: "/", label: "Dashboard", icon: <Home size={18} /> }]
+      : [];
 
   const discente: Section = {
     title: "Discente",
     items: [
-      { to: "/meus-projetos", label: "Projetos", icon: <Files size={18} /> },
+      { to: "/projetos", label: "Projetos", icon: <FolderKanban size={18} /> },
+      { to: "/meus-projetos", label: "Meus Projetos", icon: <Files size={18} /> },
       { to: "/planos", label: "Planos de Trabalho", icon: <Notebook size={18} /> },
       { to: "/relatorios", label: "Relatórios", icon: <FileText size={18} /> },
       { to: "/certificados", label: "Certificados", icon: <ShieldCheck size={18} /> },
     ],
   };
 
-  const docente: Section = {
-    title: "Docente",
+  const coordenador: Section = {
+    title: "Coordenador",
     items: [
-      { to: "/meus-projetos", label: "Projetos", icon: <Files size={18} /> },
+      { to: "/projetos", label: "Projetos", icon: <FolderKanban size={18} /> },
+      { to: "/meus-projetos", label: "Meus Projetos", icon: <GraduationCap size={18} /> },
       { to: "/planos", label: "Planos de Trabalho", icon: <Notebook size={18} /> },
-      { to: "/novo-projeto", label: "Cadastro de Projeto", icon: <GraduationCap size={18} /> },
-      { to: "/relatorios", label: "Relatórios", icon: <FileText size={18} /> },
-      { to: "/certificados", label: "Certificados", icon: <ShieldCheck size={18} /> },
-    ],
-  };
-
-  const propesq: Section = {
-    title: "PROPESQ",
-    items: [
       { to: "/avaliacoes", label: "Avaliações", icon: <FileText size={18} /> },
+      { to: "/relatorios", label: "Relatórios", icon: <Notebook size={18} /> },
+    ],
+  };
+
+  const administrador: Section = {
+    title: "Administrador",
+    items: [
       { to: "/painel-gerencial", label: "Painel Gerencial", icon: <LineChart size={18} /> },
-      { to: "/certificados", label: "Certificados", icon: <ShieldCheck size={18} /> }
+      { to: "/configuracoes", label: "Configurações do Sistema", icon: <Settings size={18} /> },
+      { to: "/acompanhamento", label: "Editais", icon: <Notebook size={18} /> },
     ],
   };
 
   const account: Section = {
     title: "Conta",
-    items: [
-      { to: "/configuracoes", label: "Conta", icon: <User size={18} /> }
-    ],
+    items: [{ to: "/configuracoes", label: "Conta", icon: <User size={18} /> }],
   };
 
   const sections: Section[] = [
     { items: base },
     ...(role === "DISCENTE" ? [discente] : []),
-    ...(role === "DOCENTE" ? [docente] : []),
-    ...(role === "PROPESQ" ? [propesq] : []),
+    ...(role === "COORDENADOR" ? [coordenador] : []),
+    ...(role === "ADMINISTRADOR" ? [administrador] : []),
     account,
   ];
 
@@ -105,59 +103,48 @@ export default function AppHeader() {
 
   return (
     <header className={cx("appheader", scrolled && "is-scrolled")} role="banner">
-      {/* Barra animada superior */}
       <div className="appheader__rainbow" aria-hidden />
-
-      {/* ROW 1 — Título à esquerda / Ações + LOGO à direita */}
       <div className="appheader__row appheader__row--top">
-        <a className="appheader__brand appheader__brand--logo" href="/" aria-label="Página inicial">
+        <a
+          className="appheader__brand appheader__brand--logo"
+          href="/"
+          aria-label="Página inicial"
+        >
           <img src={LogoImg} alt="PROPESQ" />
         </a>
 
         <div className="appheader__actions">
-          {/* Avatar dinâmico */}
           {user && (
             <div className="appheader__user">
-              {/* se houver foto -> usa img, senão fallback com inicial */}
-              {user.photoURL || user.avatarUrl || user.image ? (
+              {user.photoURL ? (
                 <img
                   className="appheader__avatar appheader__avatar-img"
-                  src={(user.photoURL || user.avatarUrl || user.image) as string}
+                  src={user.photoURL}
                   alt={user.name || "Usuário"}
-                  onError={(e) => {
-                    // fallback visual se a imagem quebrar
-                    const el = e.currentTarget;
-                    el.style.display = "none";
-                    const fallback = el.nextElementSibling as HTMLElement | null;
-                    if (fallback) fallback.style.display = "grid";
-                  }}
+                  onError={(e) => ((e.currentTarget.style.display = "none"))}
                 />
               ) : null}
-
-              <div
-                className="appheader__avatar appheader__avatar-fallback"
-                style={{ display: user?.photoURL || user?.avatarUrl || user?.image ? "none" : "grid" }}
-                aria-hidden={!!(user?.photoURL || user?.avatarUrl || user?.image)}
-              >
+              <div className="appheader__avatar appheader__avatar-fallback">
                 {user.name?.[0]?.toUpperCase() || "U"}
               </div>
-
               <div className="appheader__user-meta">
                 <span className="appheader__user-name">{user.name}</span>
-                <span className="appheader__user-role">{user.role}</span>
+                <span className="appheader__user-role">{role}</span>
               </div>
             </div>
           )}
-
           <button className="appheader__notify" aria-label="Notificações">
             <Bell size={18} />
             <span className="appheader__notify-dot" />
           </button>
-
-          <button className="appheader__iconbtn" onClick={logout} title="Sair" aria-label="Sair">
+          <button
+            className="appheader__iconbtn"
+            onClick={logout}
+            title="Sair"
+            aria-label="Sair"
+          >
             <LogOut size={16} />
           </button>
-
           <button
             className="appheader__burger"
             aria-label={mobileOpen ? "Fechar menu" : "Abrir menu"}
@@ -169,8 +156,12 @@ export default function AppHeader() {
         </div>
       </div>
 
-      {/* ROW 2 — Navegação horizontal (desktop) */}
-      <nav className="appheader__row appheader__row--nav" role="navigation" aria-label="Menu principal">
+      {/* Navegação principal */}
+      <nav
+        className="appheader__row appheader__row--nav"
+        role="navigation"
+        aria-label="Menu principal"
+      >
         <ul className="appheader__navlist" role="menubar">
           {flatItems.map((it) => {
             const isActive = matchPathStartsWith(location.pathname, it.to);
@@ -187,7 +178,9 @@ export default function AppHeader() {
                     {it.icon}
                   </span>
                   <span className="appheader__link-label">{it.label}</span>
-                  {it.badge && <span className="appheader__link-badge">{it.badge}</span>}
+                  {it.badge && (
+                    <span className="appheader__link-badge">{it.badge}</span>
+                  )}
                 </NavLink>
               </li>
             );
@@ -213,7 +206,9 @@ export default function AppHeader() {
 
           {sections.map((section, i) => (
             <React.Fragment key={i}>
-              {section.title && <li className="appheader__section-title">{section.title}</li>}
+              {section.title && (
+                <li className="appheader__section-title">{section.title}</li>
+              )}
               {section.items.map((it) => {
                 const isActive = matchPathStartsWith(location.pathname, it.to);
                 return (
@@ -228,7 +223,6 @@ export default function AppHeader() {
                         {it.icon}
                       </span>
                       <span className="appheader__link-label">{it.label}</span>
-                      {it.badge && <span className="appheader__link-badge">{it.badge}</span>}
                     </NavLink>
                   </li>
                 );
@@ -237,10 +231,13 @@ export default function AppHeader() {
           ))}
 
           <li className="appheader__mobile-bottom">
-            <a className="appheader__org appheader__org--mobile" href="/" aria-label="Página inicial">
+            <a
+              className="appheader__org appheader__org--mobile"
+              href="/"
+              aria-label="Página inicial"
+            >
               <img src={LogoImg} alt="PROPESQ" />
             </a>
-
             <button className="appheader__mobile-logout" onClick={logout}>
               <LogOut size={16} /> <span>Sair</span>
             </button>

@@ -16,6 +16,7 @@ import CertificateView from './pages/CertificateView'
 import AdminAnalytics from './pages/AdminAnalytics'
 import Settings from './pages/Settings'
 import NotFound from './pages/NotFound'
+import MyProjects from './pages/MyProjects'
 import { AuthProvider, useAuth } from './context/AuthContext'
 
 const Protected: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -24,41 +25,63 @@ const Protected: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return <>{children}</>
 }
 
-const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  return (
-    <div className="min-h-screen w-full bg-ufpb-light grid grid-rows-[auto_1fr_auto]">
-      <AppHeader />
-      <main className="overflow-auto p-4 md:p-6">{children}</main>
-      <footer className="px-6 py-4 text-center border-t border-gray-200 bg-gray-100 text-gray-500">
-        <div className="flex items-center justify-center">
-          <span className="text-sm md:text-xs tracking-wide">
-            © {new Date().getFullYear()} UFPB • PROPESQ
-          </span>
-        </div>
-      </footer>
-    </div>
-  )
+const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <div className="min-h-screen w-full bg-ufpb-light grid grid-rows-[auto_1fr_auto]">
+    <AppHeader />
+    <main className="overflow-auto p-4 md:p-6">{children}</main>
+    <footer className="px-6 py-4 text-center border-t border-gray-200 bg-gray-100 text-gray-500">
+      <div className="flex items-center justify-center">
+        <span className="text-sm md:text-xs tracking-wide">
+          © {new Date().getFullYear()} UFPB • PROPESQ
+        </span>
+      </div>
+    </footer>
+  </div>
+)
+
+const HomeRedirect: React.FC = () => {
+  const { user } = useAuth()
+  if (!user) return <Navigate to="/login" replace />
+
+  // Redireciona conforme o papel
+  if (user.role === 'DISCENTE' || user.role === 'COORDENADOR') {
+    return <Navigate to="/projetos" replace />
+  }
+
+  if (user.role === 'ADMINISTRADOR') {
+    return <Navigate to="/dashboard" replace />
+  }
+
+  // fallback
+  return <Navigate to="/login" replace />
 }
 
 export default function App() {
   return (
     <AuthProvider>
       <Routes>
-        <Route path="/login" element={<Login/>} />
-        <Route path="/" element={<Protected><Shell><Dashboard/></Shell></Protected>} />
-        <Route path="/meus-projetos" element={<Protected><Shell><Projects/></Shell></Protected>} />
-        <Route path="/novo-projeto" element={<Protected><Shell><ProjectForm/></Shell></Protected>} />
-        <Route path="/planos" element={<Protected><Shell><Plans/></Shell></Protected>} />
-        <Route path="/novo-plano" element={<Protected><Shell><PlanForm/></Shell></Protected>} />
-        <Route path="/avaliacoes" element={<Protected><Shell><Evaluations/></Shell></Protected>} />
-        <Route path="/avaliacoes/:id" element={<Protected><Shell><EvaluationDetail/></Shell></Protected>} />
-        <Route path="/acompanhamento" element={<Protected><Shell><Monitoring/></Shell></Protected>} />
-        <Route path="/relatorios" element={<Protected><Shell><Reports/></Shell></Protected>} />
-        <Route path="/certificados" element={<Protected><Shell><Certificates/></Shell></Protected>} />
-        <Route path="/certificados/:id" element={<Protected><Shell><CertificateView/></Shell></Protected>} />
-        <Route path="/painel-gerencial" element={<Protected><Shell><AdminAnalytics/></Shell></Protected>} />
-        <Route path="/configuracoes" element={<Protected><Shell><Settings/></Shell></Protected>} />
-        <Route path="*" element={<NotFound/>} />
+        <Route path="/login" element={<Login />} />
+
+        {/* Página inicial dinâmica */}
+        <Route path="/" element={<Protected><HomeRedirect /></Protected>} />
+
+        {/* Rotas principais */}
+        <Route path="/dashboard" element={<Protected><Shell><Dashboard /></Shell></Protected>} />
+        <Route path="/projetos" element={<Protected><Shell><Projects /></Shell></Protected>} />
+        <Route path="/meus-projetos" element={<Protected><Shell><MyProjects /></Shell></Protected>} />
+        <Route path="/novo-projeto" element={<Protected><Shell><ProjectForm /></Shell></Protected>} />
+        <Route path="/planos" element={<Protected><Shell><Plans /></Shell></Protected>} />
+        <Route path="/novo-plano" element={<Protected><Shell><PlanForm /></Shell></Protected>} />
+        <Route path="/avaliacoes" element={<Protected><Shell><Evaluations /></Shell></Protected>} />
+        <Route path="/avaliacoes/:id" element={<Protected><Shell><EvaluationDetail /></Shell></Protected>} />
+        <Route path="/acompanhamento" element={<Protected><Shell><Monitoring /></Shell></Protected>} />
+        <Route path="/relatorios" element={<Protected><Shell><Reports /></Shell></Protected>} />
+        <Route path="/certificados" element={<Protected><Shell><Certificates /></Shell></Protected>} />
+        <Route path="/certificados/:id" element={<Protected><Shell><CertificateView /></Shell></Protected>} />
+        <Route path="/painel-gerencial" element={<Protected><Shell><AdminAnalytics /></Shell></Protected>} />
+        <Route path="/configuracoes" element={<Protected><Shell><Settings /></Shell></Protected>} />
+
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </AuthProvider>
   )

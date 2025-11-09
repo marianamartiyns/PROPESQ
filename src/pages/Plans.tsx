@@ -1,4 +1,3 @@
-// src/pages/Plans.tsx
 import React, { useMemo, useState } from 'react'
 import Card from '@/components/Card'
 import Table from '@/components/Table'
@@ -6,154 +5,162 @@ import { planos, projetos } from '@/mock/data'
 import { Link } from 'react-router-dom'
 import '@/styles/Plans.css'
 
-type RoleType = 'discente' | 'docente' | 'servidor'
+type RoleType = 'DISCENTE' | 'COORDENADOR' | 'ADMINISTRADOR'
 
 function getCurrentRole(): RoleType {
   if (typeof window !== 'undefined' && (window as any).__ROLE__) {
-    return String((window as any).__ROLE__).toLowerCase() as RoleType
+    return String((window as any).__ROLE__).toUpperCase() as RoleType
   }
   const fromLS = (typeof window !== 'undefined' && window.localStorage)
     ? localStorage.getItem('role')
     : null
-  const normalized = (fromLS || 'discente').toLowerCase()
-  return (['docente', 'discente', 'coordenador', 'admin'].includes(normalized)
+  const normalized = (fromLS || 'DISCENTE').toUpperCase()
+  return (['DISCENTE', 'COORDENADOR', 'ADMINISTRADOR'].includes(normalized)
     ? normalized
-    : 'discente') as RoleType
+    : 'DISCENTE') as RoleType
 }
 
+// Badge color por status
 const statusClass = (status: string) => {
   const s = status.toLowerCase()
-  if (s.includes('aprov')) return 'badge badge-green'
-  if (s.includes('pend') || s.includes('em análise')) return 'badge badge-amber'
+  if (s.includes('andamento')) return 'badge badge-amber'
+  if (s.includes('finaliz')) return 'badge badge-green'
+  if (s.includes('aguard') || s.includes('resumo')) return 'badge badge-gray'
+  if (s.includes('aprov')) return 'badge badge-emerald' // cor verde mais forte
+  if (s.includes('pend') || s.includes('anál') || s.includes('analise')) return 'badge badge-amber'
   if (s.includes('reprov') || s.includes('indefer')) return 'badge badge-red'
   return 'badge badge-gray'
 }
 
-const truncate = (txt: string, n = 90) => (txt?.length > n ? `${txt.slice(0, n)}…` : txt || '—')
+// Truncar texto longo
+const truncate = (txt: string, n = 80) => (txt?.length > n ? `${txt.slice(0, n)}…` : txt || '—')
+
+// Função auxiliar de filtragem de status
+function matchStatusFilter(statusProjeto: string, filtro: string): boolean {
+  const s = statusProjeto.toLowerCase()
+  switch (filtro) {
+    case 'andamento': return s.includes('andamento')
+    case 'finalizado': return s.includes('finaliz')
+    case 'aguardando': return s.includes('aguard') || s.includes('resumo')
+    case 'aprovado': return s.includes('aprov')
+    default: return true
+  }
+}
 
 export default function Plans() {
   const role = getCurrentRole()
-  const canCreate = role === 'docente' || role === 'servidor'
+  const canCreate = role === 'COORDENADOR' || role === 'ADMINISTRADOR'
 
-  // monta data com título do projeto resolvido
+  // Dados base com junção de informações
   const baseData = useMemo(() => {
-    return planos.map(pl => ({
-      ...pl,
-      projetoTitulo: projetos.find(p => p.id === pl.projetoId)?.titulo ?? pl.projetoId
-    }))
+    return planos.map(pl => {
+      const projeto = projetos.find(p => p.id === pl.projetoId)
+      return {
+        ...pl,
+        codigo: pl.id,
+        titulo: projeto?.titulo ?? '—',
+        discente: 'Aluno Exemplo',
+        orientador: 'Prof. Dr. Fulano de Tal',
+        mobilidade: projeto?.area?.includes('Computação') ? 'Remota' : 'Presencial',
+        statusProjeto: projeto?.status ?? 'Em andamento',
+      }
+    })
   }, [])
 
-  // UI state (busca + filtros)
+  // Estado de filtros
   const [q, setQ] = useState('')
-  const [status, setStatus] = useState<'all' | 'aprovado' | 'pendente' | 'reprovado'>('all')
-  const [proj, setProj] = useState<'all' | string>('all')
+  const [status, setStatus] = useState<'all' | 'andamento' | 'finalizado' | 'aguardando' | 'aprovado'>('all')
 
-  // opções de filtros
-  const projetosOpts = useMemo(() => {
-    const set = new Set<string>()
-    baseData.forEach(d => set.add(d.projetoTitulo))
-    return Array.from(set)
-  }, [baseData])
-
+  // Filtro principal
   const filtered = useMemo(() => {
     return baseData.filter(d => {
       const hitsText =
-        (d.projetoTitulo || '').toLowerCase().includes(q.toLowerCase()) ||
-        (d.metas || '').toLowerCase().includes(q.toLowerCase()) ||
-        (d.cronograma || '').toLowerCase().includes(q.toLowerCase()) ||
-        String(d.id).includes(q)
+        d.codigo.toLowerCase().includes(q.toLowerCase()) ||
+        d.titulo.toLowerCase().includes(q.toLowerCase()) ||
+        d.discente.toLowerCase().includes(q.toLowerCase()) ||
+        d.orientador.toLowerCase().includes(q.toLowerCase())
 
-      const hitsStatus =
-        status === 'all'
-          ? true
-          : status === 'aprovado'
-            ? d.status.toLowerCase().includes('aprov')
-            : status === 'pendente'
-              ? d.status.toLowerCase().includes('pend') || d.status.toLowerCase().includes('anál')
-              : d.status.toLowerCase().includes('reprov') || d.status.toLowerCase().includes('indef')
+      const hitsStatus = matchStatusFilter(d.statusProjeto, status)
 
-      const hitsProj = proj === 'all' ? true : d.projetoTitulo === proj
-
-      return hitsText && hitsStatus && hitsProj
+      return hitsText && hitsStatus
     })
-  }, [baseData, q, status, proj])
+  }, [baseData, q, status])
 
-return (
-  <Card title="Planos de Trabalho">
-    <div className="page-plans">
-      <div className="plans-header">
-        {/* Linha 1: Busca */}
-        <div className="search-wrap">
-          <label className="select search">
-            <span>Buscar</span>
-            <input
-              type="text"
-              placeholder="Buscar por ID, projeto, metas ou cronograma…"
-              value={q}
-              onChange={e => setQ(e.target.value)}
-              aria-label="Buscar planos"
+  return (
+    <Card title="Planos de Trabalho">
+      <div className="page-plans">
+        <div className="plans-header">
+
+          {/* Busca */}
+          <div className="search-wrap">
+            <label className="select search">
+              <span>Buscar</span>
+              <input
+                type="text"
+                placeholder="Buscar por código, título ou participante…"
+                value={q}
+                onChange={e => setQ(e.target.value)}
+                aria-label="Buscar planos"
+              />
+            </label>
+          </div>
+
+          {/* Botão + Novo Plano (somente coordenador/admin) */}
+          <div className="actions">
+            {canCreate ? (
+              <Link to="/novo-plano" className="btn btn-gold">+ Novo Plano</Link>
+            ) : null}
+          </div>
+
+          {/* Filtros */}
+          <div className="selects">
+            <label className="select">
+              <span>Status</span>
+              <select
+                value={status}
+                onChange={e => setStatus(e.target.value as any)}
+                aria-label="Filtrar por status"
+              >
+                <option value="all">Todos</option>
+                <option value="andamento">Em andamento</option>
+                <option value="finalizado">Finalizado</option>
+                <option value="aguardando">Aguardando resumo</option>
+                <option value="aprovado">Aprovado</option>
+              </select>
+            </label>
+          </div>
+        </div>
+
+        {/* Tabela */}
+        {filtered.length === 0 ? (
+          <div className="empty-state">
+            <div className="empty-title">Nenhum plano encontrado</div>
+            <div className="empty-subtitle">
+              Ajuste os filtros ou tente outro termo de busca.
+            </div>
+          </div>
+        ) : (
+          <div className="table-wrap">
+            <Table
+              data={filtered}
+              cols={[
+                { key: 'codigo', header: 'Código', render: (r: any) => <span className="mono">{r.codigo}</span> },
+                { key: 'titulo', header: 'Título', render: (r: any) => <span className="proj-ttl" title={r.titulo}>{truncate(r.titulo, 60)}</span> },
+                { key: 'discente', header: 'Discente' },
+                { key: 'orientador', header: 'Orientador' },
+                { key: 'mobilidade', header: 'Mobilidade' },
+                {
+                  key: 'statusProjeto',
+                  header: 'Status',
+                  render: (r: any) => (
+                    <span className={statusClass(r.statusProjeto)}>{r.statusProjeto}</span>
+                  ),
+                },
+              ]}
             />
-          </label>
-        </div>
-
-        <div className="actions">
-          {canCreate ? (
-            <Link to="/novo-plano" className="btn btn-gold">+ Novo Plano</Link>
-          ) : null}
-        </div>
-
-        {/* Linha 2: Selects */}
-        <div className="selects">
-          <label className="select">
-            <span>Status</span>
-            <select
-              value={status}
-              onChange={e => setStatus(e.target.value as any)}
-              aria-label="Filtrar por status"
-            >
-              <option value="all">Todos</option>
-              <option value="aprovado">Aprovado</option>
-              <option value="pendente">Pendente / Em análise</option>
-              <option value="reprovado">Reprovado / Indeferido</option>
-            </select>
-          </label>
-
-          <label className="select">
-            <span>Projeto</span>
-            <select
-              value={proj}
-              onChange={e => setProj(e.target.value)}
-              aria-label="Filtrar por projeto"
-            >
-              <option value="all">Todos</option>
-              {projetosOpts.map(p => (
-                <option key={p} value={p}>{p}</option>
-              ))}
-            </select>
-          </label>
-        </div>
+          </div>
+        )}
       </div>
-
-      {filtered.length === 0 ? (
-        <div className="empty-state">
-          <div className="empty-title">Nenhum plano encontrado</div>
-          <div className="empty-subtitle">Ajuste os filtros ou tente outro termo de busca.</div>
-        </div>
-      ) : (
-        <div className="table-wrap">
-          <Table
-            data={filtered}
-            cols={[
-              { key: 'id', header: 'ID', render: (r: any) => <span className="mono">{r.id}</span> },
-              { key: 'projetoTitulo', header: 'Projeto', render: (r: any) => <span className="proj-ttl" title={r.projetoTitulo}>{truncate(r.projetoTitulo, 60)}</span> },
-              { key: 'metas', header: 'Metas', render: (r: any) => <span className="muted" title={r.metas}>{truncate(r.metas, 80)}</span> },
-              { key: 'cronograma', header: 'Cronograma', render: (r: any) => <span className="muted" title={r.cronograma}>{truncate(r.cronograma, 80)}</span> },
-              { key: 'status', header: 'Status', render: (r: any) => <span className={statusClass(r.status)}>{r.status}</span> },
-            ]}
-          />
-        </div>
-      )}
-    </div>
-  </Card>
-)
+    </Card>
+  )
 }

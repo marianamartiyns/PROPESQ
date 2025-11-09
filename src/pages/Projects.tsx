@@ -8,19 +8,19 @@ import { projetos } from '@/mock/data'
 import { Link } from 'react-router-dom'
 import '@/styles/Projects.css'
 
-type RoleType = 'discente' | 'docente' | 'servidor'
+type RoleType = 'DISCENTE' | 'COORDENADOR' | 'ADMINISTRADOR' 
 
 function getCurrentRole(): RoleType {
   if (typeof window !== 'undefined' && (window as any).__ROLE__) {
-    return String((window as any).__ROLE__).toLowerCase() as RoleType
+    return String((window as any).__ROLE__).toUpperCase() as RoleType
   }
   const fromLS = (typeof window !== 'undefined' && window.localStorage)
     ? localStorage.getItem('role')
     : null
-  const normalized = (fromLS || 'discente').toLowerCase()
-  return (['docente', 'discente', 'coordenador', 'admin', 'servidor'].includes(normalized)
+  const normalized = (fromLS || 'DISCENTE').toUpperCase()
+  return (['DISCENTE', 'COORDENADOR', 'ADMINISTRADOR'].includes(normalized)
     ? normalized
-    : 'discente') as RoleType
+    : 'DISCENTE') as RoleType
 }
 
 const statusClass = (status: string) => {
@@ -58,7 +58,7 @@ type Projeto = {
 
 export default function Projects() {
   const role = getCurrentRole()
-  const canCreate = role === 'docente' || role === 'servidor'
+  const canCreate = role === 'COORDENADOR' || role === 'ADMINISTRADOR'
 
   // ====== Critérios (com checkboxes) ======
   // Tipo
@@ -179,7 +179,7 @@ export default function Projects() {
         if (!yearText || !yearText.includes(ano.trim().toLowerCase())) return false
       }
 
-      // Escopo (sem dados no mock; tratamos apenas regras óbvias)
+      // Escopo (Todos / Somente da minha unidade / Somente externos)
       if (escopo === 'somente_externos') {
         // se existir p.tipo, exige 'externo'
         if (has('tipo') && p.tipo !== 'externo') return false
@@ -355,7 +355,7 @@ export default function Projects() {
           </div>
         </div>
 
-        {/* Escopo (linha sem checkbox, exatamente como no print) */}
+        {/* Escopo */}
         <div className="criteria-row">
           <div className="criteria-offset" />
           <div className="criteria-field">
@@ -643,9 +643,9 @@ export default function Projects() {
           {/* Cabeçalho da listagem */}
           <div className="projects-list-header">
           <h2 className="projects-list-title">
-            {role === 'docente' || role === 'servidor'
-              ? 'Projetos que Coordeno'
-              : 'Projetos em que Participo'}
+            {role === 'COORDENADOR' || role === 'ADMINISTRADOR'
+              ? 'Resultado da Busca de Projetos'
+              : 'Resultado da Busca de Projetos'}
           </h2>
 
             {canCreate && (
