@@ -1,4 +1,4 @@
-#  PROPESQ – UFPB (Protótipo PIBIC)
+#  PROPESQ (Protótipo PIBIC)
 
 > Protótipo de sistema para gerenciamento do PIBIC/UFPB com três perfis (Discente, Docente e PROPESQ/Servidor), desenvolvido em **React + Vite + TypeScript + Tailwind** e uma **API mock em Express**
 
@@ -79,11 +79,6 @@ api-rest/
     └── utils/
         └── constants.ts     # Paleta e constantes (status de projetos etc.)
 ```
-
-### Fluxo de navegação
-
-<img width="679" height="610" alt="image" src="https://github.com/user-attachments/assets/e7fb04f9-b910-4a53-84e8-17f9df30f01b" />
-
 
 ### Autenticação (mock)
 
